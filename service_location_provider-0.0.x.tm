@@ -1,3 +1,5 @@
+package provide service_location_provider 0.0.3
+
 package require udp
 package require TclOO
 package require system_information
@@ -7,7 +9,6 @@ oo::class create service_location_provider {
     variable _port _name _scope _address
 
     constructor {name scope address} {
-        puts {service_location_provider::constructor}
         if {$scope ni {local global}} {
             error "scope must be {local} or {global}"
         }
@@ -28,12 +29,10 @@ oo::class create service_location_provider {
     }
 
     destructor {
-        puts {service_location_provider::destructor}
         catch {chan close $_port}
     }
 
     method handle_received_message {} {
-        puts {service_location_provider::handle_received_message}
         set message [chan read $_port]
         set my_ip_address $::system_information::ip_address
         set sender_ip_address [lindex [chan configure $_port -peer] 0]
